@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://bootswatch.com/5/journal/bootstrap.min.css" />
+    <title>MyBookList 📚</title>
+</head>
+<body>
+  <div class="container mt-4">
+    <h1 class="display-4 text-center">
+      <i class="fa fa-book text-primary"></i>
+      My<span class="text-primary">Book</span>List
+    </h1>
+    <form id="book-form">
+      <div class="form-group">
+        <label for="title">Título</label>
+        <input type="text" id="title" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="author">Autor</label>
+        <input type="text" id="author" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for="dtlido">Lido em</label>
+        <input type="date" id="dtlido" class="form-control">
+      </div>
+      <input type="submit" 
+        value="Adicionar Livro" 
+        class="btn btn-primary w-100 mt-4"
+      >
+    </form>
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Autor</th>
+          <th>Lido em</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="book-list">
+
+      </tbody>
+    </table>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
