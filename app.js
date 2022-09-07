@@ -9,33 +9,20 @@ class Book {
 // UI Class: Handle UI Tasks
 class UI {
   static displayBooks() {
-    const StoredBooks = [
-      {
-        title: 'Book One',
-        author: 'John Doe',
-        lidoEm: '31/01/2020'
-      },
-      {
-        title: 'Book Two',
-        author: 'Jane Doe',
-        lidoEm: '14/06/2021'
-      }
-    ]
-
-    const books = StoredBooks;
-
+    const books = Store.getBooks();
     books.forEach((book) => UI.addBookToList(book));    
   }
 
   static addBookToList(book) {
     const list = document.querySelector('#book-list');
     const row = document.createElement('tr');
-    
+    const vdata = new Date(book.lidoEm); 
+
     row.innerHTML = `
       <td>${book.title}</td>
       <td>${book.author}</td>
-      <td>${book.lidoEm}</td>
-      <td><a href="#" class="btn btn-danger btn-sm delete">X</a></td>
+      <td>${vdata.toLocaleDateString('pt-BR')}</td>
+      <td><a href="#" class="btn btn-danger btn-sm delete" data-title=${book.title}>X</a></td>
     `;
 
     list.appendChild(row);
@@ -44,6 +31,7 @@ class UI {
   static deleteBook(el) {
     if (el.classList.contains('delete')) {
       el.parentElement.parentElement.remove();
+      Store.removeBook(el.dataset.title);
     }
   }
 
@@ -62,6 +50,39 @@ class UI {
     document.querySelector('#title').value = '';
     document.querySelector('#author').value = '';
     document.querySelector('#lido-em').value = '';
+  }
+}
+
+// Store Class: Handles Storage
+class Store {
+  static getBooks() {
+    let books;
+    if (!localStorage.getItem('books')) {
+      books = [];
+    } else {
+      books = JSON.parse(localStorage.getItem('books'));
+    }
+    return books;
+  }
+
+  static addBook(book) {
+    const books = Store.getBooks();
+
+    books.push(book);
+
+    localStorage.setItem('books', JSON.stringify(books));
+  }
+
+  static removeBook(title) {
+    const books = Store.getBooks();
+
+    books.forEach((book, index) => {
+      if(book.title === title) {
+        books.splice(index, 1);        
+      }
+    })
+
+    localStorage.setItem('books', JSON.stringify(books));
   }
 }
 
@@ -89,6 +110,8 @@ form.addEventListener('submit', (e) => {
   } 
 
   UI.addBookToList(book);
+  Store.addBook(book);
+
   UI.showAlert('Livro adicionado com sucesso', 'alert-success');
   UI.clearFields();
 })
@@ -100,4 +123,3 @@ table.addEventListener('click', (e) => {
   UI.deleteBook(e.target);
   UI.showAlert('Livro removido', 'alert-success');
 })
-
